@@ -6,6 +6,7 @@ dependencies:
   - rdkit
   - numpy
   - pandas
+  - scikit-learn
   - pip
   - pip:
       - streamlit
