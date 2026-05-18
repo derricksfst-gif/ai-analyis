@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
+from pathlib import Path
 
 from rdkit import Chem
 from rdkit.Chem import AllChem
@@ -23,7 +24,8 @@ st.title("Umami_SFST Batch Prediction")
 # ===============================
 # 读取模型
 # ===============================
-model = joblib.load("model.pkl")
+MODEL_PATH = Path(__file__).resolve().parent / "stack_model.joblib"
+model = joblib.load(MODEL_PATH)
 
 # ===============================
 # RDKit描述符
