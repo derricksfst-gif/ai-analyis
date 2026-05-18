@@ -9,7 +9,4 @@ dependencies:
   - scikit-learn
   - xgboost
   - lightgbm
-  - pip
-  - pip:
-      - streamlit
-      - joblib
+  - streamlit
