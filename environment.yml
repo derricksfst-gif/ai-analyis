@@ -1,0 +1,12 @@
+name: umami
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - rdkit
+  - numpy
+  - pandas
+  - pip
+  - pip:
+      - streamlit
+      - joblib
