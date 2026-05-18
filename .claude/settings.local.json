@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(.venvScriptspython.exe -c ' *)",
+      "PowerShell(& \"C:\\\\Program Files\\\\python\\\\python.exe\" -c \"import sys; print\\(sys.version\\); import pkgutil; mods = [m.name for m in pkgutil.iter_modules\\(\\)]; print\\([m for m in mods if any\\(k in m for k in ['sklearn','xgboost','lightgbm','catboost','joblib','scipy']\\)]\\)\")",
+      "PowerShell(& \"C:\\\\Users\\\\HP\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe\" -c \"import pkgutil; mods = [m.name for m in pkgutil.iter_modules\\(\\)]; print\\([m for m in mods if any\\(k in m for k in ['sklearn','xgboost','lightgbm','catboost','joblib','scipy','numpy','pandas']\\)]\\)\")"
+    ]
+  }
+}
