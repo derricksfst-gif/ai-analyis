@@ -69,13 +69,9 @@ def smiles_to_features(smiles):
 
 
 # ===============================
-# 特征列
+# 特征列（从模型中读取，避免与训练时不一致）
 # ===============================
-selected_features = [
-    'NumSaturatedRings','FP_989','FP_1102','fr_Ndealkylation2',
-    'FP_1697','FP_255','FP_828','FP_1290','FP_724','FP_486',
-    'FP_1287','FP_1272','FP_841','FP_911','FP_117','FP_739','FP_1017'
-]
+selected_features = list(model.feature_names_in_)
 
 best_threshold = 0.374
 
