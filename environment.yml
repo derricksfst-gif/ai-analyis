@@ -9,4 +9,3 @@ dependencies:
   - scikit-learn
   - xgboost
   - lightgbm
-  - streamlit
