@@ -25,7 +25,8 @@ st.title("Umami_SFST Batch Prediction")
 # 读取模型
 # ===============================
 MODEL_PATH = Path(__file__).resolve().parent / "stack_model.joblib"
-model = joblib.load(MODEL_PATH)
+_loaded = joblib.load(MODEL_PATH)
+model = _loaded['model'] if isinstance(_loaded, dict) else _loaded
 
 # ===============================
 # RDKit描述符
@@ -47,6 +48,8 @@ def smiles_to_features(smiles):
         return None
 
     mol = remover.StripMol(mol)
+    if mol is None or mol.GetNumAtoms() == 0:
+        return None
 
     fp = AllChem.GetMorganFingerprintAsBitVect(
         mol,
@@ -110,7 +113,8 @@ if uploaded_file:
     # ===============================
     # 批量预测
     # ===============================
-    for i, row in df.iterrows():
+    total = len(df)
+    for idx, (_, row) in enumerate(df.iterrows()):
 
         name = row["Name"]
         smi = row[smiles_col]
@@ -119,17 +123,13 @@ if uploaded_file:
 
         if feat_df is None:
             results.append([name, smi, None, "Invalid"])
-            continue
+        else:
+            X = feat_df[selected_features].fillna(0)
+            prob = model.predict_proba(X)[0, 1]
+            label = "Umami" if prob >= best_threshold else "Non-Umami"
+            results.append([name, smi, prob, label])
 
-        X = feat_df[selected_features].fillna(0)
-
-        prob = model.predict_proba(X)[0, 1]
-
-        label = "Umami" if prob >= best_threshold else "Non-Umami"
-
-        results.append([name, smi, prob, label])
-
-        progress.progress((i + 1) / len(df))
+        progress.progress((idx + 1) / total)
 
     # ===============================
     # 结果
@@ -145,7 +145,8 @@ if uploaded_file:
     # Top10
     # ===============================
     st.subheader("Top 10 Umami Candidates")
-    st.dataframe(result_df.sort_values("Probability", ascending=False).head(10))
+    valid_df = result_df.dropna(subset=["Probability"])
+    st.dataframe(valid_df.sort_values("Probability", ascending=False).head(10))
 
     # ===============================
     # 统计

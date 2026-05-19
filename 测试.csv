@@ -1,0 +1,40 @@
+﻿Name,canonical SMILES
+(+)-(S)-Alapyridaine,CC(C([O-])=O)[n+]1cc(ccc1CO)O
+Magnesium diglutamate,[Mg+2].NC(CCC(O)=O)C([O-])=O.NC(CCC(O)=O)C([O-])=O
+Methyl 4-((2-isopropyl-5-methylcyclohexyl)carbamoyl)benzoate,COC(=O)c1ccc(cc1)C(=O)NC1CC(C)CCC1C(C)C
+Monoammonium glutamate,[NH4+].NC(CCC(O)=O)C([O-])=O
+Monopotassium glutamate,[K+].NC(CCC(O)=O)C([O-])=O
+"Monosodium D,L-homocystate",[Na+].NC(CCS([O-])(=O)=O)C(O)=O
+"Monosodium D,L-threo-β-hydroxy glutamate",[Na+].NC(C(O)CC(O)=O)C([O-])=O
+Monosodium L-aspartate,[Na+].NC(CC(O)=O)C([O-])=O
+Monosodium L-glutamate (MSG),[Na+].NC(CCC(O)=O)C([O-])=O
+Monosodium L-ibotenate,[Na+].NC(C([O-])=O)C1=CC(=O)NO1
+Monosodium L-tricholomate,[Na+].NC(C1CC(=NO1)O)C([O-])=O
+Monosodium L-α-amino adipate,[Na+].NC(CCCC([O-])=O)C(O)=O
+N-(1-deoxy-D-fructos-1-yl)-L-glutamic acid,OC1COC(O)(CNC(CCC(O)=O)C(O)=O)C(O)C1O
+N-(1-deoxy-D-fructos-1-yl)pyroglutamic acid,OC1COC(O)(CN2C(CCC2=O)C(O)=O)C(O)C1O
+N-(3-methoxy-4-hydroxy-benzyl)-5-hydroxypentanamide,COc1cc(ccc1O)CNC(=O)CCCCO
+N-(4-hydroxyphenethyl)erythronamide,CC(O)C(O)C(O)C(=O)NCCc1ccc(cc1)O
+N-(4-hydroxyphenethyl)gluconamide,OCC(O)C(O)C(O)C(O)C(=O)NCCc1ccc(cc1)O
+N-(4-hydroxyphenethyl)succinamide,OC(=O)CCC(=O)NCCc1ccc(cc1)O
+"N-(heptan-4-yl)benzo[d][1,3] dioxole-5-carboxamide",CCCC(CCC)NC(=O)c1ccc2c(c1)OCO2
+"N2-(1-carboxy-3,4,5-trihydroxypentyl)guanosine 5'-monophosphate",OCC(O)C(O)CC(NC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1)C(O)=O
+N2-(1-carboxy-3-hydroxypropyl)guanosine 5'-monophosphate,OCCC(NC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1)C(O)=O
+N2-(1-carboxyethyl)guanosine 5'-monophosphate,CC(NC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1)C(O)=O
+N2-(2-methylthioethyl)guanosine 5'-monophosphate,CSCCNC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1
+N2-(propylthiomethyl)guanosine 5'-monophosphate,CCCSCNC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1
+"N-2,4-Dimethoxybenzyl-N-(2-pyridyl)ethyl oxalamide",COc1ccc(c(c1)OC)CNC(=O)C(=O)NCCc1ccccn1
+N2-Butylguanosine 5'-monophosphate,CCCCNC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1
+N2-Lactoyl-guanosine 5'-monophosphate,CC(O)C(=O)NC1=NC2=C(N=CN2C2OC(COP(O)(O)=O)C(O)C2O)C(=O)N1
+N-Cyclopentyl-2-isopropyl-5-methyl-bicyclo[4.1.0]heptane-7-carboxamide,CC(C)C1CCC(C)C2C1C2C(=O)NC1CCCC1
+N-Gluconylethanolamine phosphate,OCC(O)C(O)C(O)C(O)C(=O)NCCOP(O)(O)=O
+N-Phenethyl-4-hydroxypentanamide,CC(O)CCC(=O)NCCc1ccccc1
+pGlu-Pro,OC(=O)C1CCCN1C(=O)C1CCC(=O)N1
+pGlu-Pro-Glu,OC(=O)CCC(NC(=O)C1CCCN1C(=O)C1CCC(=O)N1)C(O)=O
+pGlu-Pro-Ser,OCC(NC(=O)C1CCCN1C(=O)C1CCC(=O)N1)C(O)=O
+Theogallin,OC1CC(O)(CC(OC(=O)c2cc(c(c(c2)O)O)O)C1O)C(O)=O
+Thr-Glu,CC(O)C(N)C(=O)NC(CCC(O)=O)C(O)=O
+Xanthosine 5'- monophosphate (XMP) disodium salt,[Na+].[Na+].OC1C(O)C(OC1COP([O-])([O-])=O)N1C=NC2=C1NC(=O)NC2=O
+Xanthosine 5'-monosphosphate,OC1C(O)C(OC1COP(O)(O)=O)N1C=NC2=C1NC(=O)NC2=O
+γ-L-Glutamyl-L-(S-methyl) methionine,CSCCC(NC(=O)CCC(N)C(O)=O)C(O)=O
+γ-L-Glutamyl-L-cysteinyl-glycine,NC(CCC(=O)NC(CS)C(=O)NCCC(O)=O)C(O)=O
