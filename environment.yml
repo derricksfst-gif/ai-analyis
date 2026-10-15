@@ -7,7 +7,7 @@ dependencies:
   - pip:
       - --extra-index-url https://download.pytorch.org/whl/cpu
       - torch==2.2.2+cpu
-      - dgl==2.2.1
+      - dgl==1.1.2
       - dgllife==0.3.2
       - torchdata==0.7.1
       - numpy==1.26.4
