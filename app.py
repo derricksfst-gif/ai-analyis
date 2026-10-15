@@ -1,96 +1,33 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-import joblib
-from pathlib import Path
 
-from rdkit import Chem
-from rdkit.Chem import AllChem
-from rdkit.Chem import Descriptors
-from rdkit.ML.Descriptors import MoleculeDescriptors
-from rdkit.Chem import SaltRemover
+from kokumi_infer import load_model, predict_smiles
 
-# ===============================
-# 页面配置
-# ===============================
 st.set_page_config(
-    page_title="Umami_SFST",
+    page_title="Kokumi",
     page_icon="🧬",
-    layout="centered"
+    layout="centered",
 )
 
-st.title("Umami_SFST Batch Prediction")
-
-# ===============================
-# 读取模型
-# ===============================
-MODEL_PATH = Path(__file__).resolve().parent / "stack_model.joblib"
-_loaded = joblib.load(MODEL_PATH)
-model = _loaded['model'] if isinstance(_loaded, dict) else _loaded
-
-# ===============================
-# RDKit描述符
-# ===============================
-descriptor_names = [desc[0] for desc in Descriptors._descList]
-calc = MoleculeDescriptors.MolecularDescriptorCalculator(descriptor_names)
-
-# 去盐
-remover = SaltRemover.SaltRemover()
-
-# ===============================
-# 特征计算函数
-# ===============================
-def smiles_to_features(smiles):
-
-    mol = Chem.MolFromSmiles(smiles)
-
-    if mol is None:
-        return None
-
-    mol = remover.StripMol(mol)
-    if mol is None or mol.GetNumAtoms() == 0:
-        return None
-
-    fp = AllChem.GetMorganFingerprintAsBitVect(
-        mol,
-        radius=2,
-        nBits=2048
-    )
-
-    fp_array = np.array(fp)
-    descriptors = calc.CalcDescriptors(mol)
-
-    features = np.concatenate([fp_array, descriptors])
-
-    fp_cols = [f"FP_{i}" for i in range(2048)]
-    desc_cols = descriptor_names
-
-    return pd.DataFrame([features], columns=fp_cols + desc_cols)
+st.title("Kokumi Batch Prediction")
 
 
-# ===============================
-# 特征列（从模型中读取，避免与训练时不一致）
-# ===============================
-selected_features = list(model.feature_names_in_)
+@st.cache_resource
+def get_model():
+    return load_model()
 
-best_threshold = 0.374
 
-# ===============================
-# 文件上传（CSV）
-# ===============================
+model = get_model()
+
 uploaded_file = st.file_uploader(
     "Upload CSV file",
-    type=["csv"]
+    type=["csv"],
 )
 
 if uploaded_file:
-
     df = pd.read_csv(uploaded_file)
-
-    # 清洗列名
     df.columns = df.columns.str.strip()
 
-    # 自动识别SMILES列
     if "canonical SMILES" in df.columns:
         smiles_col = "canonical SMILES"
     elif "SMILES" in df.columns:
@@ -99,65 +36,46 @@ if uploaded_file:
         st.error("CSV must contain 'SMILES' or 'canonical SMILES'")
         st.stop()
 
-    # Name列处理
     if "Name" not in df.columns:
         df["Name"] = "Unknown"
 
+    if len(df) == 0:
+        st.warning("The CSV file has no rows.")
+        st.stop()
+
     results = []
     progress = st.progress(0)
-
-    # ===============================
-    # 批量预测
-    # ===============================
     total = len(df)
+
     for idx, (_, row) in enumerate(df.iterrows()):
-
         name = row["Name"]
-        smi = row[smiles_col]
-
-        feat_df = smiles_to_features(smi)
-
-        if feat_df is None:
-            results.append([name, smi, None, "Invalid"])
-        else:
-            X = feat_df[selected_features].fillna(0)
-            prob = model.predict_proba(X)[0, 1]
-            label = "Umami" if prob >= best_threshold else "Non-Umami"
-            results.append([name, smi, prob, label])
-
+        smiles = row[smiles_col]
+        try:
+            probability, label = predict_smiles(model, smiles)
+        except Exception:
+            probability, label = None, "Invalid"
+        results.append([name, smiles, probability, label])
         progress.progress((idx + 1) / total)
 
-    # ===============================
-    # 结果
-    # ===============================
-    result_df = pd.DataFrame(results, columns=[
-        "Name", "SMILES", "Probability", "Prediction"
-    ])
+    result_df = pd.DataFrame(
+        results,
+        columns=["Name", "SMILES", "Probability", "Prediction"],
+    )
 
     st.success("Prediction Completed")
-    st.dataframe(result_df, use_container_width=True)
+    st.dataframe(result_df, width="stretch")
 
-    # ===============================
-    # Top10
-    # ===============================
-    st.subheader("Top 10 Umami Candidates")
+    st.subheader("Top 10 Kokumi Candidates")
     valid_df = result_df.dropna(subset=["Probability"])
     st.dataframe(valid_df.sort_values("Probability", ascending=False).head(10))
 
-    # ===============================
-    # 统计
-    # ===============================
     st.subheader("Prediction Summary")
     st.write(result_df["Prediction"].value_counts())
 
-    # ===============================
-    # 下载CSV
-    # ===============================
-    csv = result_df.to_csv(index=False).encode('utf-8')
-
+    csv = result_df.to_csv(index=False).encode("utf-8")
     st.download_button(
         label="Download Results (CSV)",
         data=csv,
-        file_name="umami_prediction.csv",
-        mime="text/csv"
+        file_name="kokumi_prediction.csv",
+        mime="text/csv",
     )
