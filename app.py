@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-from kokumi_infer import load_model, predict_smiles
+import numpy as np
+
+from kokumi_infer import load_model, predict_frame
 
 st.set_page_config(
     page_title="Kokumi",
@@ -43,24 +45,28 @@ if uploaded_file:
         st.warning("The CSV file has no rows.")
         st.stop()
 
-    results = []
-    progress = st.progress(0)
-    total = len(df)
-
-    for idx, (_, row) in enumerate(df.iterrows()):
-        name = row["Name"]
-        smiles = row[smiles_col]
+    work = pd.DataFrame({
+        "name": df["Name"].astype(str),
+        "smiles": df[smiles_col].map(lambda value: "" if pd.isna(value) else str(value).strip()),
+    })
+    with st.spinner("Predicting..."):
         try:
-            probability, label = predict_smiles(model, smiles)
-        except Exception:
-            probability, label = None, "Invalid"
-        results.append([name, smiles, probability, label])
-        progress.progress((idx + 1) / total)
+            predicted = predict_frame(model, work)
+        except Exception as exc:
+            st.error(f"Prediction failed: {exc}")
+            st.stop()
 
-    result_df = pd.DataFrame(
-        results,
-        columns=["Name", "SMILES", "Probability", "Prediction"],
+    prediction = np.where(
+        predicted["pred_class_clf"].eq("high"),
+        "Kokumi",
+        np.where(predicted["pred_class_clf"].eq("low"), "Non-Kokumi", "Invalid"),
     )
+    result_df = pd.DataFrame({
+        "Name": predicted["name"],
+        "SMILES": predicted["smiles"],
+        "Probability": predicted["prob_high"],
+        "Prediction": prediction,
+    })
 
     st.success("Prediction Completed")
     st.dataframe(result_df, width="stretch")
